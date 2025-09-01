@@ -1,3 +1,6 @@
+import token
+
+
 def text2idx(text):
     tokens=text.encode("utf-8")
     tokens=list(map(int,tokens))
@@ -29,3 +32,25 @@ def merge(ids,pair,idx):
             newidx.append(ids[i])
             i+=1
     return newidx
+
+def decode(ids,vocab):
+    # given idx -> Python string
+    tokens=b"".join(vocab[idx] for idx in ids)
+    text=tokens.decode("utf-8",errors="replace")
+    return text
+
+def get_stats(tokens):
+    return
+
+merges=dict()
+
+def encode(text):
+    tokens=list(text.encoding('utf-8'))
+    while len(tokens)>2:     #Merge Bits
+        stats=get_stats(tokens)
+        pair=min(stats,key=lambda p:merges.get(p,fload("inf"))) #TODO: Conduct merges
+        if pair not in merges:
+            break   # nothing else can be merged
+        idx=merges[pair]
+        tokens=merge(tokens,pair,idx)
+    return tokens
